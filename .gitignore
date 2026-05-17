@@ -1,6 +1,12 @@
 node_modules/
 .DS_Store
 
+# Claude Code local session state
+.claude/
+
+# electron-builder output
+dist/
+
 # Redundant asset bundles — same files already live alongside in Pip-2/, Bubbles-2/.
 *.zip
 

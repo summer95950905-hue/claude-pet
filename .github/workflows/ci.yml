@@ -1,0 +1,61 @@
+name: CI / Release
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+
+jobs:
+  # Cheap sanity gate on every push/PR (skipped on tag pushes — those go to release).
+  ci:
+    name: Syntax check
+    if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - name: node --check on every .js source
+        run: |
+          set -eo pipefail
+          for f in main.js preload.js renderer/app.js hooks/install-hooks.js; do
+            echo "checking $f"
+            node --check "$f"
+          done
+
+  # Tag push (v*) → build per-arch .dmg + .zip, attach to GitHub Release.
+  release:
+    name: macOS build (${{ matrix.arch }})
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [arm64, x64]
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - name: Build ${{ matrix.arch }} (.dmg + .zip)
+        run: npm run dist:mac:${{ matrix.arch }}
+        env:
+          # Skip code-signing for an unsigned distribution; users right-click → Open on first launch.
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+      - name: Upload to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/*.dmg
+            dist/*.zip
+          fail_on_unmatched_files: true
+          generate_release_notes: true

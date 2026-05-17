@@ -1,14 +1,53 @@
 {
-  "name": "deskpet",
+  "name": "claude-pet",
   "version": "0.0.1",
   "description": "Four meerkats watching your Claude Code session.",
   "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/summer95950905-hue/claude-pet.git"
+  },
+  "license": "MIT",
   "scripts": {
     "start": "electron .",
     "install-hooks": "node hooks/install-hooks.js",
-    "uninstall-hooks": "node hooks/install-hooks.js --uninstall"
+    "uninstall-hooks": "node hooks/install-hooks.js --uninstall",
+    "dist:mac": "electron-builder --mac",
+    "dist:mac:arm64": "electron-builder --mac --arm64",
+    "dist:mac:x64": "electron-builder --mac --x64"
   },
   "devDependencies": {
-    "electron": "^33.0.0"
+    "electron": "^33.0.0",
+    "electron-builder": "^25.0.0"
+  },
+  "build": {
+    "appId": "io.github.summer95950905-hue.claude-pet",
+    "productName": "claude-pet",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*",
+      "!**/qa/**",
+      "!**/*.zip",
+      "!PRD_v2.md",
+      "!CLAUDE.md",
+      "!AGENTS.md",
+      "!dist/**",
+      "!.github/**",
+      "!.gitignore",
+      "!**/.DS_Store"
+    ],
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "identity": null,
+      "target": [
+        { "target": "dmg", "arch": ["x64", "arm64"] },
+        { "target": "zip", "arch": ["x64", "arm64"] }
+      ]
+    },
+    "dmg": {
+      "writeUpdateInfo": false
+    }
   }
 }
