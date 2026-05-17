@@ -243,8 +243,30 @@ function triggerWater() {
   setTimeout(() => setState('bubbles', 'sleep'), 8000);
 }
 
+// Renderer-side timestamp of the last CC hook event. Used in handleTick to
+// apply a grace window so a stale afk=true tick (computed in main before
+// lastWakeAt updated) can't race with the event and re-sleep the pets.
+let lastRendererEventAt = 0;
+const RENDERER_EVENT_GRACE_MS = 6500; // slightly longer than one tick (5 s)
+
+// Immediately wake any pet that is currently sleeping, without waiting for
+// the next cc-tick. Called at the top of handleEvent so pets react at once.
+function wakeFromSleep() {
+  for (const id of AFK_OTHER_PETS) {
+    const el = pets[id];
+    if (!el || id === 'bubbles') continue; // Bubbles manages its own sleep
+    if (el.dataset.state === 'sleep') setState(id, 'idle');
+  }
+  if (scoutAfk) {
+    scoutAfk = false;
+    applyScoutForSession();
+  }
+}
+
 // Map raw Claude Code hook events to session state.
 function handleEvent(evt) {
+  lastRendererEventAt = Date.now();
+  wakeFromSleep(); // wake sleeping pets immediately; don't wait for next tick
   const t = evt.type;
   switch (t) {
     case 'SessionStart':
@@ -311,12 +333,17 @@ function applyAfk(afk) {
     }
   }
   // Knox / Bubbles / Pip.
+  // While Claude has an active session (anything other than idle/stale), Knox
+  // and Pip must stay awake — they're on duty. Only Bubbles follows its own
+  // sleep timer unconditionally (health reminders aren't session-dependent).
+  const claudeActive = sessionState !== 'idle' && sessionState !== 'stale';
   for (const id of AFK_OTHER_PETS) {
     const el = pets[id];
     if (!el) continue;
     const cur = el.dataset.state;
     if (afk) {
       if (cur === 'sleep' || AFK_SKIP_STATES.has(cur)) continue;
+      if ((id === 'knox' || id === 'pip') && claudeActive) continue;
       setState(id, 'sleep');
     } else {
       // Wake to idle. Bubbles defaults back to sleep on its next own-timer pass.
@@ -334,7 +361,12 @@ function handleTick({ idleMs, afk }) {
   if (Date.now() - lastWaterAt > DEFAULTS.waterIntervalMs) {
     triggerWater();
   }
-  applyAfk(!!afk);
+  // Grace period: if a CC event fired very recently, treat afk as false
+  // regardless of what main computed. This prevents a stale afk=true tick
+  // (computed just before lastWakeAt was updated) from racing with the event
+  // and re-sleeping pets that were just woken by wakeFromSleep().
+  const recentEvent = Date.now() - lastRendererEventAt < RENDERER_EVENT_GRACE_MS;
+  applyAfk(!!afk && !recentEvent);
 }
 
 // Drag-or-click. Moving > DRAG_THRESHOLD turns the gesture into a window drag
@@ -400,6 +432,14 @@ function onMouseUp() {
     }, { capture: true, once: true });
   }
 }
+
+// Right-click anywhere in the window → show the tray-equivalent context menu
+// (minisize / bigsize / Show-Hide / Quit). Fallback for when the macOS tray
+// icon is hidden by a crowded menu bar.
+document.addEventListener('contextmenu', (e) => {
+  e.preventDefault();
+  window.deskpet.showMenu();
+});
 
 document.addEventListener('mousedown', onDocMouseDown);
 window.addEventListener('mousemove', onMouseMove);

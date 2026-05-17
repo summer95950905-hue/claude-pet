@@ -12,4 +12,5 @@ contextBridge.exposeInMainWorld('deskpet', {
   dragEnd: () => ipcRenderer.send('win-drag-end'),
   rally: () => ipcRenderer.send('rally'),
   petClick: () => ipcRenderer.send('pet-click'),
+  showMenu: () => ipcRenderer.send('show-context-menu'),
 });

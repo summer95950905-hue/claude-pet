@@ -23,7 +23,7 @@ const SNAP_THRESHOLD = 12;
 // Right edge of pet[i] → left edge of pet[i+1] = PET_GAPS[i].
 // Indexed by left-pet position in PET_ORDER (scout↔knox, knox↔pip, pip↔bubbles).
 // Negative values overlap; less-negative = more space.
-const PET_GAPS = [-50, -50, -20];
+const PET_GAPS = [-50, -30, -20];
 
 const petWindows = {};
 const dragIntent = new WeakMap(); // win → { x, y } cumulative intended position during a drag
@@ -202,14 +202,24 @@ function buildTrayMenu() {
 }
 
 function buildTray() {
-  const img = nativeImage.createEmpty();
+  // Load a pre-generated 22×22 transparent PNG so macOS always has a valid
+  // image slot for the menu-bar item. setTitle provides the visible '🦝' text.
+  const iconPath = path.join(__dirname, 'tray-icon.png');
+  const img = nativeImage.createFromPath(iconPath);
   tray = new Tray(img);
   tray.setTitle('🦝');
   tray.setToolTip('deskpet');
   tray.setContextMenu(buildTrayMenu());
+  tray.on('click', () => tray.popUpContextMenu());
 }
 
 ipcMain.handle('get-port', () => HOOK_PORT);
+
+// Right-click on any pet → pop up the same menu as the tray.
+ipcMain.on('show-context-menu', (e) => {
+  const w = BrowserWindow.fromWebContents(e.sender);
+  if (w && !w.isDestroyed()) buildTrayMenu().popup({ window: w });
+});
 
 function idOf(win) {
   for (const id of PET_ORDER) {

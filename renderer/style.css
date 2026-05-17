@@ -665,8 +665,8 @@ body[data-pet="pip"] .pet[data-state="sleep"] .body {
   to   { background-position: -1152px -1040px; }
 }
 @keyframes pip-sleep-loop {
-  0%,   49.99% { background-position: -1152px -1040px; transform: translate(0px, 30px) scale(0.52); }
-  50%,  100%   { background-position: -1344px -1040px; transform: translate(0px, 30px) scale(0.52); }
+  0%,   49.99% { background-position: -1152px -1040px; transform: translate(0px, 39px) scale(0.468); }
+  50%,  100%   { background-position: -1344px -1040px; transform: translate(0px, 39px) scale(0.468); }
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
