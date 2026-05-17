@@ -653,20 +653,20 @@ body[data-pet="pip"] .pet[data-state="celebrate"] .body {
 body[data-pet="pip"] .pet[data-state="sleep"] .body {
   opacity: 1;
   animation:
-    pip-sleep-intro 1.6s steps(4) 1 forwards,
-    pip-sleep-loop 2.4s linear infinite 1.6s;
+    pip-sleep-intro 2.4s steps(6) 1 forwards,
+    pip-sleep-loop 1.6s linear infinite 2.4s;
 }
-/* Loop total = 2.4s: frames 4-5 each 0.4s (16.67%), frames 6-7 each 0.8s (33.33%).
- * All 4 frames at scale(0.52) = 0.65 × 0.8. Second half runs 2× slower. */
+/* Intro: cols 0-5 (6 frames) play once — character settles into sleep pose.
+ * Loop: only cols 6-7 cycle (0.8s each = 1.6s total) — steady breathing.
+ * translate(0, 30px) pushes the curled sprite down so Pip's baseline aligns
+ * with Knox and Bubbles (both bottom-aligned in their 136px pet boxes). */
 @keyframes pip-sleep-intro {
   from { background-position: 0 -1040px; }
-  to   { background-position: -768px -1040px; }
+  to   { background-position: -1152px -1040px; }
 }
 @keyframes pip-sleep-loop {
-  0%,    16.65% { background-position: -768px  -1040px; transform: scale(0.52); }
-  16.67%, 33.32% { background-position: -960px  -1040px; transform: scale(0.52); }
-  33.33%, 66.65% { background-position: -1152px -1040px; transform: scale(0.52); }
-  66.67%, 100%   { background-position: -1344px -1040px; transform: scale(0.52); }
+  0%,   49.99% { background-position: -1152px -1040px; transform: translate(0px, 30px) scale(0.52); }
+  50%,  100%   { background-position: -1344px -1040px; transform: translate(0px, 30px) scale(0.52); }
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
