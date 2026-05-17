@@ -641,12 +641,24 @@ body[data-pet="pip"] .pet[data-state="celebrate"] .body {
   to   { background-position: -768px -624px; }
 }
 
-/* sleep ← row 5 (8 frames) — AFK doze */
+/* sleep ← row 5 — AFK doze.
+ * Intro: cols 0-3 (first 4 frames) play once as a settle-into-sleep transition.
+ * Loop: cols 4-7 (last 4 frames) cycle as the steady breathing pose.
+ * `forwards` on intro pins it at its end, then loop's higher list-order wins
+ * once its delay elapses, so the swap from col 3 → col 4 happens cleanly.
+ * opacity:1 overrides the generic .pet[data-state="sleep"] opacity:0.55 rule. */
 body[data-pet="pip"] .pet[data-state="sleep"] .body {
-  animation: pip-sleep 3s steps(8) infinite;
+  opacity: 1;
+  animation:
+    pip-sleep-intro 1.6s steps(4) 1 forwards,
+    pip-sleep-loop 1.6s steps(4) infinite 1.6s;
 }
-@keyframes pip-sleep {
+@keyframes pip-sleep-intro {
   from { background-position: 0 -1040px; }
+  to   { background-position: -768px -1040px; }
+}
+@keyframes pip-sleep-loop {
+  from { background-position: -768px -1040px; }
   to   { background-position: -1536px -1040px; }
 }
 
