@@ -206,14 +206,15 @@ function applySessionState(state) {
 function triggerCelebrate() {
   if (!pets.pip) return;
   setState('pip', 'celebrate', '完成啦！');
-  // Fire 1–3 random confetti bursts during the celebrate window. Each burst
-  // is the same one that pet click triggers; ~700ms spacing fits 3 bursts
-  // comfortably inside the 3.5s celebrate before pip reverts to idle.
-  const bursts = 1 + Math.floor(Math.random() * 3);
+  // Fire 3–8 random confetti bursts during the celebrate window. Each burst
+  // is the same one pet click triggers; 400ms spacing fits the max 8 bursts
+  // inside the 3.5s celebrate (last launch ~2.8s, fade ends ~4.1s — the last
+  // confetti drifts past Pip's return to idle, which looks natural).
+  const bursts = 3 + Math.floor(Math.random() * 6);
   for (let i = 0; i < bursts; i++) {
     setTimeout(() => {
       if (pets.pip) spawnConfetti(pets.pip);
-    }, i * 700);
+    }, i * 400);
   }
   setTimeout(() => {
     if (pets.pip && pets.pip.dataset.state === 'celebrate') setState('pip', 'idle');

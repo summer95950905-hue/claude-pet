@@ -644,6 +644,9 @@ body[data-pet="pip"] .pet[data-state="celebrate"] .body {
 /* sleep ← row 5 — AFK doze.
  * Intro: cols 0-3 (first 4 frames) play once as a settle-into-sleep transition.
  * Loop: cols 4-7 (last 4 frames) cycle as the steady breathing pose.
+ *   Frames 4-5 keep the base scale(0.65); frames 6-7 are scaled to 0.52
+ *   (= 0.65 × 0.8) per user request. Loop uses `linear` + per-keyframe
+ *   transform so each frame can carry its own scale independently.
  * `forwards` on intro pins it at its end, then loop's higher list-order wins
  * once its delay elapses, so the swap from col 3 → col 4 happens cleanly.
  * opacity:1 overrides the generic .pet[data-state="sleep"] opacity:0.55 rule. */
@@ -651,15 +654,19 @@ body[data-pet="pip"] .pet[data-state="sleep"] .body {
   opacity: 1;
   animation:
     pip-sleep-intro 1.6s steps(4) 1 forwards,
-    pip-sleep-loop 1.6s steps(4) infinite 1.6s;
+    pip-sleep-loop 2.4s linear infinite 1.6s;
 }
+/* Loop total = 2.4s: frames 4-5 each 0.4s (16.67%), frames 6-7 each 0.8s (33.33%).
+ * All 4 frames at scale(0.52) = 0.65 × 0.8. Second half runs 2× slower. */
 @keyframes pip-sleep-intro {
   from { background-position: 0 -1040px; }
   to   { background-position: -768px -1040px; }
 }
 @keyframes pip-sleep-loop {
-  from { background-position: -768px -1040px; }
-  to   { background-position: -1536px -1040px; }
+  0%,    16.65% { background-position: -768px  -1040px; transform: scale(0.52); }
+  16.67%, 33.32% { background-position: -960px  -1040px; transform: scale(0.52); }
+  33.33%, 66.65% { background-position: -1152px -1040px; transform: scale(0.52); }
+  66.67%, 100%   { background-position: -1344px -1040px; transform: scale(0.52); }
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
