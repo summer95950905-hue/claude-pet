@@ -1,6 +1,6 @@
-# deskpet — 狐獴桌宠 MVP α
+# claude-pet — 狐獴桌宠
 
-四只狐獴盯着你的 Claude Code 会话。占位形象用 emoji，先跑通链路。
+四只狐獴（Scout / Knox / Bubbles / Pip）实时盯着你的 Claude Code 会话，把 hook 事件画成桌面动画。
 
 ## 角色
 
@@ -11,26 +11,49 @@
 | Bubbles | 💧       | 本地计时器（默认 45 分钟提醒一次喝水）     |
 | Pip     | 🎉       | `Stop` hook（任务完成时撒花，30 秒去重）   |
 
-## 跑起来
+## 安装
+
+两种方式任选。装好之后还得跑一次 hook 注入（B 方式自带），才能让 Claude Code 把事件推到 pet。
+
+### A. 从 GitHub Release 下载 .app（仅 macOS）
+
+1. 打开 [Releases](https://github.com/summer95950905-hue/claude-pet/releases)，按机型挑文件下载：
+   - Apple Silicon (M1/M2/M3/M4)：`claude-pet-<version>-arm64.dmg`
+   - Intel Mac：`claude-pet-<version>.dmg`
+   - 不想用 dmg 的话 `*-mac.zip` 也是同一个 .app。
+2. 打开 .dmg，把 **claude-pet.app** 拖进 `/Applications`。
+3. 首次启动：在 Finder 里**右键 → 打开 → 确认打开**（应用未签名，需手动绕过 Gatekeeper，只需一次）。
+4. 注入 Claude Code hooks：当前版本还没把这一步做进托盘菜单，需要单独跑一下：
+   ```bash
+   curl -fsSL https://raw.githubusercontent.com/summer95950905-hue/claude-pet/main/hooks/install-hooks.js | node
+   ```
+   或者下载 `hooks/install-hooks.js` 后 `node install-hooks.js` 执行。脚本会自动备份 `~/.claude/settings.json` 到 `~/.claude/settings.json.deskpet-backup`。
+
+### B. 从源码运行（开发 / 自己改）
+
+需要本机有 Node 18+。
 
 ```bash
-cd /Users/ryan/deskpet
-npm install        # 装 electron
-npm run install-hooks   # 往 ~/.claude/settings.json 注入 hooks（自动备份）
-npm start          # 启动桌宠
+git clone git@github.com:summer95950905-hue/claude-pet.git
+cd claude-pet
+npm install
+npm run install-hooks   # 注入 hooks 到 ~/.claude/settings.json（自动备份）
+npm start               # 启动桌宠
 ```
 
-启动后右下角会出现 4 只狐獴，菜单栏图标可以「Show/Hide」「Simulate」「Quit」。
-没有 Claude Code 也能用菜单里的 Simulate 项测各状态。
+启动后右下角出现 4 只狐獴。托盘图标可以 Show/Hide、切尺寸、退出。
 
 ## 卸载 hooks
 
 ```bash
+# 源码方式
 npm run uninstall-hooks
+
+# 或仅有 install-hooks.js 时
+node hooks/install-hooks.js --uninstall
 ```
 
-会还原回 `~/.claude/settings.json` 中 deskpet 注入前的状态。
-原始备份在 `~/.claude/settings.json.deskpet-backup`。
+会还原回 `~/.claude/settings.json` 中 claude-pet 注入前的状态。原始备份在 `~/.claude/settings.json.deskpet-backup`。
 
 ## 架构
 
