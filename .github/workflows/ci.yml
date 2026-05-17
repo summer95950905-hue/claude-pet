@@ -28,15 +28,15 @@ jobs:
             node --check "$f"
           done
 
-  # Tag push (v*) → build per-arch .dmg + .zip, attach to GitHub Release.
+  # Tag push (v*) → single job builds both arches (electron-builder runs the
+  # two darwin packagings in parallel internally), attaches the 4 artifacts to
+  # a GitHub Release. Matrix removed because --arch flag was ignored against
+  # the config's per-target arch arrays, so each matrix leg built both arches
+  # and we'd upload duplicates.
   release:
-    name: macOS build (${{ matrix.arch }})
+    name: macOS build (arm64 + x64)
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: macos-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        arch: [arm64, x64]
     permissions:
       contents: write
     steps:
@@ -46,10 +46,10 @@ jobs:
           node-version: '20'
           cache: 'npm'
       - run: npm ci
-      - name: Build ${{ matrix.arch }} (.dmg + .zip)
-        run: npm run dist:mac:${{ matrix.arch }}
+      - name: Build .dmg + .zip for arm64 and x64
+        run: npm run dist:mac
         env:
-          # Skip code-signing for an unsigned distribution; users right-click → Open on first launch.
+          # No Apple Developer ID; users right-click → Open on first launch.
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
       - name: Upload to release
         uses: softprops/action-gh-release@v2

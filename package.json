@@ -12,9 +12,7 @@
     "start": "electron .",
     "install-hooks": "node hooks/install-hooks.js",
     "uninstall-hooks": "node hooks/install-hooks.js --uninstall",
-    "dist:mac": "electron-builder --mac",
-    "dist:mac:arm64": "electron-builder --mac --arm64",
-    "dist:mac:x64": "electron-builder --mac --x64"
+    "dist:mac": "electron-builder --mac --publish never"
   },
   "devDependencies": {
     "electron": "^33.0.0",
