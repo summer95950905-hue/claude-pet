@@ -1,0 +1,15 @@
+node_modules/
+.DS_Store
+
+# Redundant asset bundles — same files already live alongside in Pip-2/, Bubbles-2/.
+*.zip
+
+# Editor / OS noise
+.vscode/
+.idea/
+*.swp
+*.log
+
+# Hook installer's local backup of the user's settings.json (lives in $HOME, not repo).
+# Listed here in case anyone accidentally drops one in the project root.
+settings.json.deskpet-backup

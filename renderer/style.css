@@ -1,0 +1,677 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  color: #fff;
+  -webkit-user-select: none;
+  user-select: none;
+  /* Drag is handled in JS (via IPC) so the main process can apply snap. */
+}
+
+#stage {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 6px;
+  height: 168px;
+  box-sizing: border-box;
+  /* Scale the whole stage to match the window's physical size. Window itself
+     is already resized in main.js to PET_SIZE × scale; the CSS transform
+     keeps the stage's 1:1-pixel internal layout while rendering it at the
+     correct visual size. Using CSS transform (not setZoomFactor) avoids the
+     macOS transparent-window white-backing bug. */
+  transform: scale(var(--scale-mul, 1));
+  transform-origin: top left;
+}
+
+.pet {
+  position: relative;
+  width: 110px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  cursor: grab;
+}
+
+.pet:active {
+  cursor: grabbing;
+}
+
+body.dragging,
+body.dragging .pet {
+  cursor: grabbing !important;
+}
+
+.pet .body {
+  font-size: 56px;
+  line-height: 1;
+  transition: transform 0.2s ease;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+}
+
+.pet .prop {
+  position: absolute;
+  bottom: 56px;
+  right: 14px;
+  font-size: 22px;
+  opacity: 0.95;
+}
+
+.pet .name {
+  margin-top: 6px;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.pet .bubble {
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px);
+  background: rgba(20, 20, 24, 0.85);
+  color: #fff;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+
+.pet.show-bubble .bubble {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-10px);
+}
+
+/* state animations */
+.pet[data-state="idle"] .body {
+  animation: bob 3s ease-in-out infinite;
+}
+
+.pet[data-state="running"] .body {
+  animation: scan 1.2s ease-in-out infinite;
+}
+
+.pet[data-state="thinking"] .body {
+  animation: think 2.5s ease-in-out infinite;
+}
+
+.pet[data-state="alert"] .body {
+  animation: alert 0.4s ease-in-out infinite;
+}
+
+.pet[data-state="celebrate"] .body {
+  animation: celebrate 0.5s ease-in-out infinite;
+}
+
+.pet[data-state="sleep"] .body {
+  opacity: 0.55;
+  animation: breathe 4s ease-in-out infinite;
+}
+
+.pet[data-state="failed"] .body {
+  filter: grayscale(0.6) drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+  animation: shake 0.6s ease-in-out infinite;
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+@keyframes scan {
+  0%, 100% { transform: rotate(-6deg); }
+  50% { transform: rotate(6deg); }
+}
+@keyframes think {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-2px) scale(1.03); }
+}
+@keyframes alert {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-8px) scale(1.08); }
+}
+@keyframes celebrate {
+  0% { transform: translateY(0) rotate(-10deg); }
+  50% { transform: translateY(-10px) rotate(10deg); }
+  100% { transform: translateY(0) rotate(-10deg); }
+}
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+/* confetti for Pip */
+.confetti {
+  position: absolute;
+  width: 6px;
+  height: 10px;
+  top: 40%;
+  left: 50%;
+  pointer-events: none;
+  border-radius: 1px;
+  animation: confetti-fall 1.2s ease-out forwards;
+}
+@keyframes confetti-fall {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) rotate(540deg); opacity: 0; }
+}
+
+/* Debug status line — hidden when each pet lives in its own small window,
+   but kept in the DOM so existing references in app.js still work. */
+#status {
+  display: none;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * Scout sprite mode
+ * Spritesheet: ../scout/spritesheet.webp, 1536x1872, 9 rows × 8 cols, 192x208 per cell.
+ * Rows (top→bottom):
+ *   0 idle (6f) · 1 running-right (8f) · 2 running-left (8f)
+ *   3 waving (4f, → Completed) · 4 jumping (5f, → Stale)
+ *   5 failed (8f) · 6 waiting (6f) · 7 running (6f) · 8 review (6f, → Thinking)
+ * Each state has its own @keyframes using steps() to flip background-position.
+ * High specificity (body[data-pet="scout"] ...) overrides the emoji-era
+ * transform animations defined above.
+ * ───────────────────────────────────────────────────────────────────────── */
+
+body[data-pet="scout"] #stage {
+  display: block;
+  padding: 0;
+  height: 168px;
+}
+
+body[data-pet="scout"] .pet {
+  position: relative;
+  width: 144px;          /* 192 * 0.75 */
+  height: 156px;         /* 208 * 0.75 */
+  margin: 6px auto 0;
+  display: block;
+}
+
+body[data-pet="scout"] .pet .body {
+  width: 192px;          /* native cell size — kept so background-position math
+                            in @keyframes scout-* stays untouched */
+  height: 208px;
+  background-image: url('../scout/spritesheet.webp');
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  image-rendering: pixelated;
+  font-size: 0;          /* hide the 🦝 emoji fallback */
+  line-height: 0;
+  filter: none;          /* drop the emoji drop-shadow */
+  transition: none;
+  transform: scale(0.75);
+  transform-origin: top left;
+}
+
+body[data-pet="scout"] .pet .prop {
+  display: none;         /* binoculars baked into sprite */
+}
+
+/* Per-state sprite animations.
+ * Each row R has a y offset of -R*208; each frame F shifts x by -F*192.
+ * keyframe "to" position is -(frames * 192)px so steps(frames) lands on the
+ * last visible frame at -(frames-1)*192px. */
+body[data-pet="scout"] .pet[data-state="idle"] .body {
+  animation: scout-idle 1.5s steps(6) infinite;
+}
+@keyframes scout-idle {
+  from { background-position: 0 0; }
+  to   { background-position: -1152px 0; }
+}
+
+body[data-pet="scout"] .pet[data-state="running-right"] .body {
+  animation: scout-run-right 0.7s steps(8) infinite;
+}
+@keyframes scout-run-right {
+  from { background-position: 0 -208px; }
+  to   { background-position: -1536px -208px; }
+}
+
+body[data-pet="scout"] .pet[data-state="running-left"] .body {
+  animation: scout-run-left 0.7s steps(8) infinite;
+}
+@keyframes scout-run-left {
+  from { background-position: 0 -416px; }
+  to   { background-position: -1536px -416px; }
+}
+
+body[data-pet="scout"] .pet[data-state="completed"] .body {
+  animation: scout-completed 0.5s steps(4) infinite;
+}
+@keyframes scout-completed {
+  from { background-position: 0 -624px; }
+  to   { background-position: -768px -624px; }
+}
+
+/* stale ← row 4 jumping, 5 frames with per-frame squash & stretch.
+   The hatch-pet artist drew Knox-equivalent-Scout jumping with the character
+   visually higher on the side frames, so we compensate:
+   - Frame 0 (col 0) and frame 5 (col 4): scale to 0.6 (= 0.75 × 0.8) — squash
+     at takeoff / landing. Origin top-left inherited from base, so the squashed
+     pose shrinks toward upper-left corner of the pet box.
+   - Frames 1, 2, 3 (cols 1-3): translate y -5px, keeping base scale 0.75 —
+     the character lifts during the apex frames.
+   `linear` timing + 19.99/20.01 boundaries make the in-between transitions
+   discrete jumps rather than smooth interpolations. */
+body[data-pet="scout"] .pet[data-state="stale"] .body {
+  animation: scout-stale 0.6s linear infinite;
+}
+@keyframes scout-stale {
+  0%, 19.99%   { background-position: 0     -832px; transform: scale(0.6); }
+  20%, 39.99%  { background-position: -192px -832px; transform: scale(0.75); }
+  40%, 59.99%  { background-position: -384px -832px; transform: scale(0.75); }
+  60%, 79.99%  { background-position: -576px -832px; transform: scale(0.75); }
+  80%, 100%    { background-position: -768px -832px; transform: scale(0.6); }
+}
+
+body[data-pet="scout"] .pet[data-state="failed"] .body {
+  animation: scout-failed 1.2s steps(8) infinite;
+}
+@keyframes scout-failed {
+  from { background-position: 0 -1040px; }
+  to   { background-position: -1536px -1040px; }
+}
+
+body[data-pet="scout"] .pet[data-state="waiting"] .body {
+  animation: scout-waiting 1.0s steps(6) infinite;
+}
+@keyframes scout-waiting {
+  from { background-position: 0 -1248px; }
+  to   { background-position: -1152px -1248px; }
+}
+
+body[data-pet="scout"] .pet[data-state="running"] .body {
+  animation: scout-running 0.8s steps(6) infinite;
+}
+@keyframes scout-running {
+  from { background-position: 0 -1456px; }
+  to   { background-position: -1152px -1456px; }
+}
+
+body[data-pet="scout"] .pet[data-state="thinking"] .body {
+  animation: scout-thinking 1.5s steps(6) infinite;
+}
+@keyframes scout-thinking {
+  from { background-position: 0 -1664px; }
+  to   { background-position: -1152px -1664px; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * Knox sprite mode
+ * Same 1536x1872 / 9-row hatch-pet contract as Scout.
+ * Knox only needs idle / alert / sleep today — other rows reserved for later.
+ * alert uses the "waiting" row (row 6) because that's where Knox 举牌 + 摇铃.
+ * sleep freezes on idle frame 0 with opacity 0.55 from the generic sleep rule.
+ * ───────────────────────────────────────────────────────────────────────── */
+
+body[data-pet="knox"] #stage {
+  display: block;
+  padding: 0;
+  height: 148px;          /* matches Knox window height (PET_SIZE in main.js) */
+}
+
+body[data-pet="knox"] .pet {
+  position: relative;
+  width: 125px;           /* 192 * 0.65 */
+  height: 136px;          /* 208 * 0.65 */
+  margin: 6px auto 0;
+  display: block;
+}
+
+body[data-pet="knox"] .pet .body {
+  width: 192px;
+  height: 208px;
+  background-image: url('../knox/spritesheet.webp');
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  image-rendering: pixelated;
+  font-size: 0;          /* hide the 🦝 emoji fallback */
+  line-height: 0;
+  filter: none;
+  transition: none;
+  transform: scale(0.65);
+  transform-origin: top left;
+}
+
+body[data-pet="knox"] .pet .prop {
+  display: none;
+}
+
+body[data-pet="knox"] .pet[data-state="idle"] .body {
+  animation: knox-idle 1.5s steps(6) infinite;
+}
+@keyframes knox-idle {
+  from { background-position: 0 0; }
+  to   { background-position: -1152px 0; }
+}
+
+/* alert ← row 6 (waiting): Knox 举牌 / 摇铃 / 催确认 */
+body[data-pet="knox"] .pet[data-state="alert"] .body {
+  animation: knox-alert 0.9s steps(6) infinite;
+}
+@keyframes knox-alert {
+  from { background-position: 0 -1248px; }
+  to   { background-position: -1152px -1248px; }
+}
+
+/* sleep — same row-4 intro+loop chain as jumping, but with three overrides:
+   1. Loop runs 2x slower (0.72s vs jumping's 0.36s) — softer breathing pace.
+   2. Visual scaled to 0.4875x (= 0.75 × Knox's normal 0.65x).
+   3. Bottom-aligned with idle: horizontally centered in the 125x136 box,
+      vertically pinned to the bottom so Knox appears to curl up at floor level
+      rather than float mid-frame. translate(16, 34) puts the 93.6x101.4 visual
+      bottom at y≈135.4, matching idle's bottom at y≈135.2. */
+body[data-pet="knox"] .pet[data-state="sleep"] .body {
+  animation-name: knox-jump-intro, knox-jump-loop;
+  /* Slowed 2x from prior values (intro 0.6→1.2s, loop 0.72→1.44s) for a
+     softer breathing pace. delay also doubled so loop still kicks in after
+     intro finishes. */
+  animation-duration: 1.2s, 1.44s;
+  animation-timing-function: steps(5), steps(3);
+  animation-iteration-count: 1, infinite;
+  animation-delay: 0s, 1.2s;
+  animation-fill-mode: forwards, none;
+  opacity: 1;
+  transform: translate(16px, 34px) scale(0.4875);
+}
+
+/* failed ← row 5 (8 frames). When sessionState=failed Knox marks the incident. */
+body[data-pet="knox"] .pet[data-state="failed"] .body {
+  animation: knox-failed 1.2s steps(8) infinite;
+}
+@keyframes knox-failed {
+  from { background-position: 0 -1040px; }
+  to   { background-position: -1536px -1040px; }
+}
+
+/* waving ← row 3 (4 frames). Played for 1.5s after user clicks Knox during
+   an alert — the "盖章通过" acknowledgement. */
+body[data-pet="knox"] .pet[data-state="waving"] .body {
+  animation: knox-waving 0.5s steps(4) infinite;
+}
+@keyframes knox-waving {
+  from { background-position: 0 -624px; }
+  to   { background-position: -768px -624px; }
+}
+
+/* jumping — escalation. Frames 1-5 play once as a build-up, then frames 3-5
+   loop indefinitely. Per-frame rate matches between intro and loop (0.12s/f).
+   Sleep state has its own block above with slower loop + smaller scale. */
+body[data-pet="knox"] .pet[data-state="jumping"] .body {
+  animation-name: knox-jump-intro, knox-jump-loop;
+  animation-duration: 0.6s, 0.36s;
+  animation-timing-function: steps(5), steps(3);
+  animation-iteration-count: 1, infinite;
+  animation-delay: 0s, 0.6s;
+  animation-fill-mode: forwards, none;
+}
+@keyframes knox-jump-intro {
+  from { background-position: 0 -832px; }     /* frame 1 */
+  to   { background-position: -960px -832px; } /* through frame 5 */
+}
+@keyframes knox-jump-loop {
+  from { background-position: -384px -832px; } /* frame 3 */
+  to   { background-position: -960px -832px; } /* through frame 5 */
+}
+
+/* review ← row 8 (6 frames). Knox's "偶尔检查记录" — fires every ~35s while
+   idle, lasts 6s, returns to idle. Background detail, no action implied.
+   (Currently paused via KNOX_REVIEW_ENABLED flag in app.js.) */
+body[data-pet="knox"] .pet[data-state="review"] .body {
+  animation: knox-review 1.8s steps(6) infinite;
+}
+@keyframes knox-review {
+  from { background-position: 0 -1664px; }
+  to   { background-position: -1152px -1664px; }
+}
+
+/* running-right ← row 1 (8 frames), running-left ← row 2 (8 frames).
+   Activated while the user drags Knox horizontally — sprite swaps to match
+   drag direction. Identical row contract as Scout's drag sprite. */
+body[data-pet="knox"] .pet[data-state="running-right"] .body {
+  animation: knox-run-right 0.7s steps(8) infinite;
+}
+@keyframes knox-run-right {
+  from { background-position: 0 -208px; }
+  to   { background-position: -1536px -208px; }
+}
+
+body[data-pet="knox"] .pet[data-state="running-left"] .body {
+  animation: knox-run-left 0.7s steps(8) infinite;
+}
+@keyframes knox-run-left {
+  from { background-position: 0 -416px; }
+  to   { background-position: -1536px -416px; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * Bubbles sprite mode
+ * Same hatch-pet 1536x1872 / 9-row contract (192x208 cells).
+ * Bubbles' code uses only 2 states: sleep (default) and idle (water alert).
+ * Other 7 rows reserved for future health reminders (stretch / eye rest).
+ * Scale 0.75 (matches Scout); window stays at 152x168 (default).
+ * ───────────────────────────────────────────────────────────────────────── */
+
+body[data-pet="bubbles"] #stage {
+  display: block;
+  padding: 0;
+  height: 129px;          /* matches Bubbles window height */
+}
+
+body[data-pet="bubbles"] .pet {
+  position: relative;
+  width: 108px;           /* 192 * 0.5625 */
+  height: 117px;          /* 208 * 0.5625 */
+  margin: 6px auto 0;
+  display: block;
+}
+
+body[data-pet="bubbles"] .pet .body {
+  width: 192px;
+  height: 208px;
+  background-image: url('../Bubbles-2/spritesheet.webp');
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  image-rendering: pixelated;
+  font-size: 0;
+  line-height: 0;
+  filter: none;
+  transition: none;
+  transform: scale(0.5625); /* 0.75 × Scout's 0.75 — smaller than Knox (0.65) */
+  transform-origin: top left;
+}
+
+body[data-pet="bubbles"] .pet .prop {
+  display: none;
+}
+
+/* sleep ← row 0 idle (6 frames). Bubbles' default. Slow 2s loop for breathing
+   pace. Override generic sleep opacity since Bubbles is sleep by design. */
+body[data-pet="bubbles"] .pet[data-state="sleep"] .body {
+  animation: bubbles-sleep 2s steps(6) infinite;
+  opacity: 1;
+}
+@keyframes bubbles-sleep {
+  from { background-position: 0 0; }
+  to   { background-position: -1152px 0; }
+}
+
+/* idle ← row 3 waving (×2) + row 6 waiting (×1) — 14-frame composite loop.
+   Plays for 8s when the water timer fires (triggerWater in app.js):
+   Bubbles raises the cup twice (drinking gestures), then a single longer
+   pause looking around (the row-6 "waiting" pose). Per-frame rate matches
+   the original drink speed (0.15s/frame → 2.1s total cycle). */
+body[data-pet="bubbles"] .pet[data-state="idle"] .body {
+  animation: bubbles-idle 2.1s linear infinite;
+}
+@keyframes bubbles-idle {
+  /* waving pass 1 — row 3 frames 1-4 */
+  0%,     7.13%  { background-position: 0     -624px; }
+  7.14%,  14.28% { background-position: -192px -624px; }
+  14.29%, 21.42% { background-position: -384px -624px; }
+  21.43%, 28.56% { background-position: -576px -624px; }
+  /* waving pass 2 */
+  28.57%, 35.71% { background-position: 0     -624px; }
+  35.72%, 42.85% { background-position: -192px -624px; }
+  42.86%, 49.99% { background-position: -384px -624px; }
+  50%,    57.14% { background-position: -576px -624px; }
+  /* waiting — row 6 frames 1-6 */
+  57.15%, 64.28% { background-position: 0     -1248px; }
+  64.29%, 71.42% { background-position: -192px -1248px; }
+  71.43%, 78.56% { background-position: -384px -1248px; }
+  78.57%, 85.71% { background-position: -576px -1248px; }
+  85.72%, 92.85% { background-position: -768px -1248px; }
+  92.86%, 100%   { background-position: -960px -1248px; }
+}
+
+/* running-right ← row 1 (8 frames), running-left ← row 2 (8 frames).
+   Activated while the user drags Bubbles horizontally. Same row contract as
+   Scout / Knox drag sprites. */
+body[data-pet="bubbles"] .pet[data-state="running-right"] .body {
+  animation: bubbles-run-right 0.7s steps(8) infinite;
+}
+@keyframes bubbles-run-right {
+  from { background-position: 0 -208px; }
+  to   { background-position: -1536px -208px; }
+}
+
+body[data-pet="bubbles"] .pet[data-state="running-left"] .body {
+  animation: bubbles-run-left 0.7s steps(8) infinite;
+}
+@keyframes bubbles-run-left {
+  from { background-position: 0 -416px; }
+  to   { background-position: -1536px -416px; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * Pip sprite mode
+ * Spritesheet: ../Pip-2/spritesheet.webp, 1536x1872, 9 rows × 8 cols, 192x208 per cell.
+ * Rows (top→bottom):
+ *   0 idle (6f) · 1 running-right (8f) · 2 running-left (8f)
+ *   3 waving (4f, → celebrate: Pip waves flag on completion)
+ *   4 jumping (5f) · 5 failed (8f) · 6 waiting (6f)
+ *   7 running (6f) · 8 review (6f)
+ * celebrate → waving row (挥旗); confetti overlay fired by JS is kept.
+ * sleep     → idle row slowed + dimmed (AFK doze, same pattern as Bubbles).
+ * running-right / running-left → drag direction, same row contract as others.
+ * ───────────────────────────────────────────────────────────────────────── */
+
+body[data-pet="pip"] #stage {
+  display: block;
+  padding: 0;
+  height: 148px;
+}
+
+body[data-pet="pip"] .pet {
+  position: relative;
+  width: 125px;          /* 192 * 0.65 */
+  height: 136px;         /* 208 * 0.65 */
+  margin: 6px auto 0;
+  display: block;
+}
+
+body[data-pet="pip"] .pet .body {
+  width: 192px;
+  height: 208px;
+  background-image: url('../Pip-2/spritesheet.webp');
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  image-rendering: pixelated;
+  font-size: 0;
+  line-height: 0;
+  filter: none;
+  transition: none;
+  transform: scale(0.65);
+  transform-origin: top left;
+}
+
+body[data-pet="pip"] .pet .prop {
+  display: none;         /* prop baked into sprite */
+}
+
+/* idle ← row 0 (6 frames) */
+body[data-pet="pip"] .pet[data-state="idle"] .body {
+  animation: pip-idle 3s steps(6) infinite;
+}
+@keyframes pip-idle {
+  from { background-position: 0 0; }
+  to   { background-position: -1152px 0; }
+}
+
+/* running-right ← row 1 (8 frames) — drag right */
+body[data-pet="pip"] .pet[data-state="running-right"] .body {
+  animation: pip-run-right 0.7s steps(8) infinite;
+}
+@keyframes pip-run-right {
+  from { background-position: 0 -208px; }
+  to   { background-position: -1536px -208px; }
+}
+
+/* running-left ← row 2 (8 frames) — drag left */
+body[data-pet="pip"] .pet[data-state="running-left"] .body {
+  animation: pip-run-left 0.7s steps(8) infinite;
+}
+@keyframes pip-run-left {
+  from { background-position: 0 -416px; }
+  to   { background-position: -1536px -416px; }
+}
+
+/* celebrate ← row 3 waving (4 frames) — Pip waves flag; JS confetti overlaid */
+body[data-pet="pip"] .pet[data-state="celebrate"] .body {
+  animation: pip-celebrate 0.5s steps(4) infinite;
+}
+@keyframes pip-celebrate {
+  from { background-position: 0 -624px; }
+  to   { background-position: -768px -624px; }
+}
+
+/* sleep ← row 5 (8 frames) — AFK doze */
+body[data-pet="pip"] .pet[data-state="sleep"] .body {
+  animation: pip-sleep 3s steps(8) infinite;
+}
+@keyframes pip-sleep {
+  from { background-position: 0 -1040px; }
+  to   { background-position: -1536px -1040px; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * Pet name label
+ * Small 9px text at the bottom of each pet, centered. Slight overlap with the
+ * lower edge of the sprite (feet/tail area); strong dark text-shadow keeps it
+ * legible on any sprite color. pointer-events:none so it never blocks drag
+ * or click on the pet beneath.
+ * ───────────────────────────────────────────────────────────────────────── */
+.pet .name {
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9), 0 0 2px rgba(0, 0, 0, 0.7);
+  opacity: 0.5;
+  pointer-events: none;
+  white-space: nowrap;
+  line-height: 1;
+  z-index: 2;
+}

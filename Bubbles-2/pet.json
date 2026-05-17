@@ -1,0 +1,6 @@
+{
+  "id": "bubbles-2",
+  "displayName": "Bubbles",
+  "description": "Bubbles 是负责定时健康提醒的小睡魔 Codex 宠物：平时趴着睡觉，提醒喝水、起身和护眼，完成后满意点头继续睡。",
+  "spritesheetPath": "spritesheet.webp"
+}

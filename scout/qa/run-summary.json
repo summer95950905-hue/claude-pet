@@ -1,0 +1,9 @@
+{
+  "ok": true,
+  "run_dir": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex",
+  "spritesheet": "/Users/ryan/deskpet/scout/spritesheet.webp",
+  "validation": "/Users/ryan/deskpet/scout/qa/validation.json",
+  "contact_sheet": "/Users/ryan/deskpet/scout/qa/contact-sheet.png",
+  "review": "/Users/ryan/deskpet/scout/qa/review.json",
+  "package": "/Users/ryan/deskpet/scout"
+}

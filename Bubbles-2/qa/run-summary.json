@@ -1,0 +1,10 @@
+{
+  "ok": true,
+  "run_dir": "/Users/ryan/Documents/Codex/2026-05-17/hatch-pet-skill-bubbles-codex-codex/work/Bubbles-2-run",
+  "spritesheet": "/Users/ryan/deskpet/Bubbles-2/spritesheet.webp",
+  "validation": "/Users/ryan/deskpet/Bubbles-2/qa/validation.json",
+  "contact_sheet": "/Users/ryan/deskpet/Bubbles-2/qa/contact-sheet.png",
+  "review": "/Users/ryan/deskpet/Bubbles-2/qa/review.json",
+  "package": "/Users/ryan/deskpet/Bubbles-2",
+  "notes": "No black outline: near-black pixels were recolored to warm dark brown; chroma/purple fringe was removed; alpha is hardened for crisp pixel edges."
+}

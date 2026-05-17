@@ -1,0 +1,10 @@
+{
+  "ok": true,
+  "run_dir": "/Users/ryan/Documents/Codex/2026-05-17/hatch-pet-skill-bubbles-codex-codex/work/Pip-2-run-v2",
+  "spritesheet": "/Users/ryan/deskpet/Pip-2/spritesheet.webp",
+  "validation": "/Users/ryan/deskpet/Pip-2/qa/validation.json",
+  "contact_sheet": "/Users/ryan/deskpet/Pip-2/qa/contact-sheet.png",
+  "review": "/Users/ryan/deskpet/Pip-2/qa/review.json",
+  "package": "/Users/ryan/deskpet/Pip-2",
+  "notes": "Slimmer/taller Pip based on user reference. No black outline: near-black pixels recolored to warm dark brown; chroma/purple fringe removed; alpha hardened for crisp pixel edges."
+}

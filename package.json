@@ -1,0 +1,14 @@
+{
+  "name": "deskpet",
+  "version": "0.0.1",
+  "description": "Four meerkats watching your Claude Code session.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "install-hooks": "node hooks/install-hooks.js",
+    "uninstall-hooks": "node hooks/install-hooks.js --uninstall"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0"
+  }
+}

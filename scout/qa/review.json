@@ -1,0 +1,962 @@
+{
+  "ok": true,
+  "frames_root": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames",
+  "errors": [],
+  "warnings": [],
+  "rows": [
+    {
+      "state": "idle",
+      "expected_frames": 6,
+      "actual_frames": 6,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/idle/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12371,
+          "bbox": [
+            42,
+            5,
+            150,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 135
+        },
+        {
+          "index": 1,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/idle/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12132,
+          "bbox": [
+            42,
+            5,
+            149,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 139
+        },
+        {
+          "index": 2,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/idle/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12292,
+          "bbox": [
+            43,
+            5,
+            148,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 130
+        },
+        {
+          "index": 3,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/idle/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11697,
+          "bbox": [
+            45,
+            5,
+            146,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 102
+        },
+        {
+          "index": 4,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/idle/04.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12009,
+          "bbox": [
+            43,
+            5,
+            148,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 172
+        },
+        {
+          "index": 5,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/idle/05.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12157,
+          "bbox": [
+            43,
+            5,
+            149,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 176
+        }
+      ]
+    },
+    {
+      "state": "running-right",
+      "expected_frames": 8,
+      "actual_frames": 8,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/running-right/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12527,
+          "bbox": [
+            32,
+            5,
+            159,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 234
+        },
+        {
+          "index": 1,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/running-right/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12640,
+          "bbox": [
+            35,
+            5,
+            157,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 238
+        },
+        {
+          "index": 2,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/running-right/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12846,
+          "bbox": [
+            31,
+            5,
+            160,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 284
+        },
+        {
+          "index": 3,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/running-right/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12353,
+          "bbox": [
+            34,
+            5,
+            158,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 270
+        },
+        {
+          "index": 4,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/running-right/04.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12381,
+          "bbox": [
+            37,
+            5,
+            154,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 239
+        },
+        {
+          "index": 5,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/running-right/05.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12620,
+          "bbox": [
+            30,
+            5,
+            161,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 344
+        },
+        {
+          "index": 6,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/running-right/06.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12380,
+          "bbox": [
+            34,
+            5,
+            158,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 240
+        },
+        {
+          "index": 7,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/running-right/07.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12478,
+          "bbox": [
+            40,
+            5,
+            152,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 235
+        }
+      ]
+    },
+    {
+      "state": "running-left",
+      "expected_frames": 8,
+      "actual_frames": 8,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/running-left/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12515,
+          "bbox": [
+            34,
+            5,
+            157,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 230
+        },
+        {
+          "index": 1,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/running-left/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12634,
+          "bbox": [
+            36,
+            5,
+            156,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 241
+        },
+        {
+          "index": 2,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/running-left/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12832,
+          "bbox": [
+            30,
+            5,
+            162,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 283
+        },
+        {
+          "index": 3,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/running-left/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12335,
+          "bbox": [
+            34,
+            5,
+            157,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 264
+        },
+        {
+          "index": 4,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/running-left/04.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12580,
+          "bbox": [
+            27,
+            5,
+            165,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 272
+        },
+        {
+          "index": 5,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/running-left/05.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12385,
+          "bbox": [
+            35,
+            5,
+            156,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 265
+        },
+        {
+          "index": 6,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/running-left/06.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12337,
+          "bbox": [
+            36,
+            5,
+            155,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 251
+        },
+        {
+          "index": 7,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/running-left/07.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12478,
+          "bbox": [
+            40,
+            5,
+            152,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 235
+        }
+      ]
+    },
+    {
+      "state": "waving",
+      "expected_frames": 4,
+      "actual_frames": 4,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/waving/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11755,
+          "bbox": [
+            46,
+            5,
+            145,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 133
+        },
+        {
+          "index": 1,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/waving/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12912,
+          "bbox": [
+            37,
+            5,
+            155,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 162
+        },
+        {
+          "index": 2,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/waving/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12930,
+          "bbox": [
+            36,
+            5,
+            155,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 151
+        },
+        {
+          "index": 3,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/waving/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12799,
+          "bbox": [
+            38,
+            5,
+            153,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 132
+        }
+      ]
+    },
+    {
+      "state": "jumping",
+      "expected_frames": 5,
+      "actual_frames": 5,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/jumping/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 16900,
+          "bbox": [
+            21,
+            5,
+            171,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 236
+        },
+        {
+          "index": 1,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/jumping/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11482,
+          "bbox": [
+            44,
+            5,
+            148,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 177
+        },
+        {
+          "index": 2,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/jumping/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12526,
+          "bbox": [
+            39,
+            5,
+            153,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 154
+        },
+        {
+          "index": 3,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/jumping/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11852,
+          "bbox": [
+            42,
+            5,
+            149,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 182
+        },
+        {
+          "index": 4,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/jumping/04.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 16833,
+          "bbox": [
+            21,
+            5,
+            171,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 266
+        }
+      ]
+    },
+    {
+      "state": "failed",
+      "expected_frames": 8,
+      "actual_frames": 8,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/failed/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 13253,
+          "bbox": [
+            43,
+            5,
+            149,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 242
+        },
+        {
+          "index": 1,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/failed/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 14350,
+          "bbox": [
+            22,
+            5,
+            170,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 256
+        },
+        {
+          "index": 2,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/failed/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 13071,
+          "bbox": [
+            43,
+            5,
+            149,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 243
+        },
+        {
+          "index": 3,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/failed/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12830,
+          "bbox": [
+            40,
+            5,
+            152,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 236
+        },
+        {
+          "index": 4,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/failed/04.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 13248,
+          "bbox": [
+            43,
+            5,
+            149,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 280
+        },
+        {
+          "index": 5,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/failed/05.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 14031,
+          "bbox": [
+            34,
+            5,
+            157,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 318
+        },
+        {
+          "index": 6,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/failed/06.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12364,
+          "bbox": [
+            43,
+            5,
+            149,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 261
+        },
+        {
+          "index": 7,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/failed/07.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 13067,
+          "bbox": [
+            44,
+            5,
+            148,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 310
+        }
+      ]
+    },
+    {
+      "state": "waiting",
+      "expected_frames": 6,
+      "actual_frames": 6,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/waiting/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12828,
+          "bbox": [
+            41,
+            5,
+            151,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 193
+        },
+        {
+          "index": 1,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/waiting/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11658,
+          "bbox": [
+            54,
+            5,
+            137,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 173
+        },
+        {
+          "index": 2,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/waiting/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 13336,
+          "bbox": [
+            46,
+            5,
+            145,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 240
+        },
+        {
+          "index": 3,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/waiting/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 13275,
+          "bbox": [
+            37,
+            5,
+            155,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 194
+        },
+        {
+          "index": 4,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/waiting/04.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12959,
+          "bbox": [
+            39,
+            5,
+            152,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 225
+        },
+        {
+          "index": 5,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/waiting/05.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12755,
+          "bbox": [
+            42,
+            5,
+            149,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 227
+        }
+      ]
+    },
+    {
+      "state": "running",
+      "expected_frames": 6,
+      "actual_frames": 6,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/running/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12976,
+          "bbox": [
+            36,
+            5,
+            156,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 170
+        },
+        {
+          "index": 1,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/running/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12989,
+          "bbox": [
+            40,
+            5,
+            151,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 182
+        },
+        {
+          "index": 2,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/running/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12424,
+          "bbox": [
+            45,
+            5,
+            147,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 187
+        },
+        {
+          "index": 3,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/running/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12326,
+          "bbox": [
+            43,
+            5,
+            148,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 167
+        },
+        {
+          "index": 4,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/running/04.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12740,
+          "bbox": [
+            41,
+            5,
+            151,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 190
+        },
+        {
+          "index": 5,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/running/05.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12778,
+          "bbox": [
+            41,
+            5,
+            151,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 155
+        }
+      ]
+    },
+    {
+      "state": "review",
+      "expected_frames": 6,
+      "actual_frames": 6,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/review/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12376,
+          "bbox": [
+            36,
+            5,
+            156,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 145
+        },
+        {
+          "index": 1,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/review/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12730,
+          "bbox": [
+            48,
+            5,
+            144,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 170
+        },
+        {
+          "index": 2,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/review/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12332,
+          "bbox": [
+            36,
+            5,
+            155,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 157
+        },
+        {
+          "index": 3,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/review/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12591,
+          "bbox": [
+            43,
+            5,
+            148,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 171
+        },
+        {
+          "index": 4,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/review/04.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12455,
+          "bbox": [
+            42,
+            5,
+            150,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 180
+        },
+        {
+          "index": 5,
+          "file": "/Users/ryan/Documents/Codex/2026-05-16/1-claude-2-3-4-soul/hatch-pet-runs/scout-codex/frames/review/05.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12597,
+          "bbox": [
+            40,
+            5,
+            152,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 174
+        }
+      ]
+    }
+  ]
+}
