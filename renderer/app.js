@@ -33,11 +33,9 @@ const statusEl = document.getElementById('status');
 const DEFAULTS = {
   staleAfterMs: 60_000,
   waterIntervalMs: 45 * 60_000,
-  celebrateCooldownMs: 30_000,
 };
 
 let sessionState = 'idle'; // idle | thinking | running | waiting | completed | failed | stale
-let lastCelebrateAt = 0;
 let lastWaterAt = Date.now();
 
 // Knox is decoupled from sessionState: it's a discrete "attention requested"
@@ -207,14 +205,16 @@ function applySessionState(state) {
 
 function triggerCelebrate() {
   if (!pets.pip) return;
-  const now = Date.now();
-  if (now - lastCelebrateAt < DEFAULTS.celebrateCooldownMs) {
-    setState('pip', 'idle');
-    return;
-  }
-  lastCelebrateAt = now;
   setState('pip', 'celebrate', '完成啦！');
-  spawnConfetti(pets.pip);
+  // Fire 1–3 random confetti bursts during the celebrate window. Each burst
+  // is the same one that pet click triggers; ~700ms spacing fits 3 bursts
+  // comfortably inside the 3.5s celebrate before pip reverts to idle.
+  const bursts = 1 + Math.floor(Math.random() * 3);
+  for (let i = 0; i < bursts; i++) {
+    setTimeout(() => {
+      if (pets.pip) spawnConfetti(pets.pip);
+    }, i * 700);
+  }
   setTimeout(() => {
     if (pets.pip && pets.pip.dataset.state === 'celebrate') setState('pip', 'idle');
   }, 3500);

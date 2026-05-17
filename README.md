@@ -17,7 +17,7 @@
     <td><b>哨兵</b>·戴望远镜的会话状态监视者。所有 Claude Code 事件都让它做反应，自身 sprite 1:1 镜像当前会话状态（idle / thinking / running / waiting / completed / stale / failed）。双击它可以集合其他三只回到身边。</td>
     <td><b>盘查守门员</b>·红头巾 + 金铃铛 + 木牌。`Notification` hook 或 PreToolUse 后 1.5s 没等到 PostToolUse（推断终端在等权限确认）时举牌提醒，10s 后升级为跳跃催促，点一下盖章通过。</td>
     <td><b>健康小睡魔</b>·平时趴着睡觉，每 45 分钟提醒一次喝水/起身/护眼，被点也会主动来一次。</td>
-    <td><b>庆祝派</b>·`Stop` / `SubagentStop` 触发撒花跳舞，30s 冷却防止连珠炮。AFK 后入睡也有专属"settle → breathe" 两段循环。</td>
+    <td><b>庆祝派</b>·`Stop` / `SubagentStop` 触发撒花跳舞，每次随机播 1–3 轮彩纸，连发不限速。AFK 后入睡也有专属"settle → breathe" 两段循环。</td>
   </tr>
 </table>
 

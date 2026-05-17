@@ -65,11 +65,11 @@ The product premise is that **four characters separate four cognitive concerns**
 | Scout   | session state monitor | all Claude Code hook events; dataset.state mirrors sessionState 1:1 |
 | Knox    | confirmation guard    | `Notification` hook + Pre→Post permission heuristic    |
 | Bubbles | health/break timer    | local timer (`waterIntervalMs`, default 45 min)        |
-| Pip     | completion celebrant  | `Stop` / `SubagentStop` hooks (30s cooldown)           |
+| Pip     | completion celebrant  | `Stop` / `SubagentStop` hooks; fires 1–3 random confetti bursts per trigger |
 
 Knox is decoupled from `sessionState` — it has its own mini state machine: `alert` (waving placard) → escalates to `jumping` after `KNOX_ESCALATE_MS` (10s) → click ack flips to `waving` for `KNOX_ACK_MS` (1.5s) → `idle`. `failed` is set on session failure and cleared when the session resumes. Auto-clears at `KNOX_ALERT_TIMEOUT_MS` (30s).
 
-Defaults live in `renderer/app.js` (`DEFAULTS` and the `KNOX_*` constants): `staleAfterMs`, `waterIntervalMs`, `celebrateCooldownMs`, the Knox timeouts, and `PRE_TO_POST_HEURISTIC_MS`. There is no settings UI — they are constants.
+Defaults live in `renderer/app.js` (`DEFAULTS` and the `KNOX_*` constants): `staleAfterMs`, `waterIntervalMs`, the Knox timeouts, and `PRE_TO_POST_HEURISTIC_MS`. There is no settings UI — they are constants.
 
 ## Visual layer
 
